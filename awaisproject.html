@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+
+*{
+    padding: 0;
+    margin: 0;
+}
+body{
+    /* background-image: url(bg.webp);
+    background-position: center ; */
+    /* background-size: auto; */
+    /* background-repeat: no-repeat; */
+    /* height: 100%; */
+}
+#main{
+    display: flex;
+    justify-content: left;
+    /* align-items: center; */
+    margin: 1rem;
+    gap: 2rem;
+    margin-left: 270px;
+
+}
+.counter{
+    height: 60px;
+    width: 60px;
+    border-radius:50% ;
+    padding: .5rem;
+    font-size: 3.8rem;
+    border: 0px solid black;
+   text-align: center;
+   display: flex;
+   justify-content: center;
+    
+
+}
+#gameOver{
+    display: flex;
+    height: 200px;
+    width: 300px;
+    border: 2px black solid;
+    display: none;
+    position: absolute;
+    left: 38%;
+    top: 15rem;
+    padding: 1rem;
+    font-size: 2.8rem;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    /* height:100%;
+    width:100%; */
+}
+#bubbleContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    border: 2px solid black;
+    /* width: 37.5rem; */
+    width: 60%;
+    height: 31.25rem;
+    position: relative;
+    background-image: url(bg.webp);
+    background-position: center ;
+   
+}
+.bubble{
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    top: -60px;
+}
+    </style>
+</head>
+<body>
+    <div id="main">
+        <div id="purpleCount" style="background-color:purple ;" class="counter"></div>
+        <div id="yellowCount" style="background-color:yellow ;" class="counter"></div>
+        <div id="blueCount" style="background-color:blue ;" class="counter"></div>
+    </div>
+    <div id="bubbleContainer"  class="full"></div>
+    <div id="gameOver"></div>
+
+
+    <script>
+
+
+let leftArray = [];
+let centerArray = [];
+let rightArray = [];
+
+let purpleCount = 0;
+let yellowCount = 0;
+let blueCount = 0;
+
+
+let CenterArrayBottom = 450;
+let leftArrayBottom = 450;
+let rightArrayBottom = 450;
+// let CenterArrayTop = -50;
+
+
+let leftArrayLeft = 0;
+let rightArrayLeft = 770;
+
+
+
+
+let stop = setInterval(() => {
+    let num = Math.floor(Math.random() * 3) + 1;
+    console.log(num)
+    if(num==1){
+        let newBall =document.createElement('img')
+        newBall.src='purple.png'
+        newBall.className='bubble'
+        bubbleContainer.appendChild(newBall);
+        leftArray.push(newBall);
+        let stop = setInterval(() => {
+
+        newBall.style.top=leftArrayBottom + 'px';   
+        newBall.style.left=leftArrayLeft + 'px';   
+        leftArrayBottom=leftArrayBottom-newBall.offsetWidth;
+        leftArrayLeft += 20;
+        newBall.style.left=leftArrayLeft + 'px';  
+        clearInterval(stop)
+
+    }, 800);
+
+        purpleCount++;
+        document.getElementById('purpleCount').innerHTML= purpleCount ; 
+
+    }
+    if (num == 2) {
+        let newBall = document.createElement('img')
+        newBall.src = 'yellow.png'
+        newBall.className = 'bubble'
+        bubbleContainer.appendChild(newBall);
+        centerArray.push(newBall);
+        let stop = setInterval(() => {
+
+            newBall.style.top = (newBall.offsetTop + 1) + 'px';
+            // CenterArrayTop= CenterArrayTop+newBall.offsetWidth ;
+            // if(newBall.offsetTop>CenterArrayBottom){
+                //     newBall.style.top = "450px";
+                //     // clearInterval(stop)
+                // }
+                // else{
+                    
+                    // newBall.style.top =CenterArrayBottom-newBall.offsetWidth;
+                    // newBall.style.top=CenterArrayBottom + 'px';
+                    newBall.style.top = CenterArrayBottom + 'px';
+                    
+                    CenterArrayBottom = CenterArrayBottom - newBall.offsetWidth;
+                    // newBall.style.top = CenterArrayBottom + "px";
+                    clearInterval(stop)
+
+            // }
+
+        }, 800);
+        yellowCount++;
+        document.getElementById('yellowCount').innerHTML = yellowCount;
+    }
+    if(num==3){
+            let newBall =document.createElement('img')
+            newBall.src='blue.png'
+            newBall.className='bubble'
+            bubbleContainer.appendChild(newBall);
+            rightArray.push(newBall);
+        let stop = setInterval(() => {
+        newBall.style.top = (newBall.offsetTop + 1) + 'px';
+
+        newBall.style.top=rightArrayBottom + 'px';
+        newBall.style.left=rightArrayLeft + 'px';   
+        rightArrayBottom= rightArrayBottom-newBall.offsetWidth ;
+        rightArrayLeft -= 20;
+        newBall.style.left=rightArrayLeft + 'px';  
+        clearInterval(stop)
+
+    }, 800);
+
+        blueCount++;
+        document.getElementById('blueCount').innerHTML= blueCount ; 
+    }
+    if( purpleCount>= 10 || yellowCount>=10 ||blueCount>=10){
+        clearInterval(stop);
+        gameOver.style.display= "block";
+        let winer=Math.max(purpleCount,yellowCount,blueCount);
+        if(purpleCount==10){
+            gameOver.style.backgroundColor ="purple"
+            gameOver.innerHTML='Game Over </br>' +' Total Purple Balls is '+ winer +'</br> Purple Winner';
+        }
+        if(yellowCount==10){
+            gameOver.style.backgroundColor ="yellow";
+              gameOver.innerHTML='Game Over </br>' +' Total yellow Balls is '+ winer +'</br> yellow Winner';
+          }
+          if(blueCount==10){
+            gameOver.style.backgroundColor ="blue";
+              gameOver.innerHTML='Game Over </br>' +' Total blue Balls is '+ winer +'</br> blue Winner';
+          }
+
+
+    }
+}, 1000);
+    </script>
+
+</body>
+</html>
